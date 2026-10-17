@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=ZeroTier Control Center
+Comment=Manage ZeroTier networks from a graphical interface
+Exec=zerotier-gui
+Icon=zerotier-gui
+Terminal=false
+Categories=Network;Utility;
+StartupNotify=true

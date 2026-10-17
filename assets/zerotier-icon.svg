@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">ZeroTier Control Center</title>
+  <desc id="desc">A dark Z on a cyan to blue gradient tile.</desc>
+  <defs>
+    <linearGradient id="tile-gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#57DCE8"/>
+      <stop offset="1" stop-color="#618CFF"/>
+    </linearGradient>
+    <linearGradient id="tile-gloss" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".18"/>
+      <stop offset=".55" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="3" y="3" width="122" height="122" rx="34" fill="url(#tile-gradient)"/>
+  <rect x="3.75" y="3.75" width="120.5" height="120.5" rx="33.25" fill="none" stroke="#FFFFFF" stroke-opacity=".16" stroke-width="1.5"/>
+  <path d="M34 35h60v14L53 79h41v14H34V79l41-30H34z" fill="#07131E"/>
+  <path d="M37 7h35L7 72V37A30 30 0 0 1 37 7Z" fill="url(#tile-gloss)"/>
+</svg>
