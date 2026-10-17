@@ -210,6 +210,12 @@ ApplicationWindow {
                     }
                     Item { Layout.fillWidth: true }
                     Rectangle {
+                        visible: zt.demoMode
+                        Layout.preferredWidth: 105; Layout.preferredHeight: 34; radius: 10
+                        color: "#172b3d"; border.color: "#3c7990"
+                        Text { anchors.centerIn: parent; text: tr("DADOS DEMO", "DEMO DATA"); color: window.cyan; font.pixelSize: 9; font.bold: true; font.letterSpacing: 1 }
+                    }
+                    Rectangle {
                         id: refreshButton
                         Layout.preferredWidth: 138; Layout.preferredHeight: 42; radius: 12
                         color: refreshMouse.containsMouse ? "#1a2a40" : "#111c2a"
@@ -425,7 +431,7 @@ ApplicationWindow {
                                         Behavior on scale { NumberAnimation { duration: 140; easing.type: Easing.OutBack } }
                                         Behavior on color { ColorAnimation { duration: 120 } }
                                         Text { anchors.centerIn: parent; text: "⌫"; color: deleteMouse.containsMouse ? "#ff8f9c" : "#71849c"; font.pixelSize: 15; rotation: deleteMouse.containsMouse ? -8 : 0; Behavior on rotation { NumberAnimation { duration: 130; easing.type: Easing.OutCubic } } }
-                                        MouseArea { id: deleteMouse; anchors.fill: parent; hoverEnabled: true; onClicked: { leaveDialog.networkId = modelData.id; leaveDialog.networkName = modelData.name || modelData.id; leaveDialog.open() } }
+                                        MouseArea { id: deleteMouse; anchors.fill: parent; hoverEnabled: true; enabled: !zt.demoMode; onClicked: { leaveDialog.networkId = modelData.id; leaveDialog.networkName = modelData.name || modelData.id; leaveDialog.open() } }
                                     }
                                 }
 
@@ -501,7 +507,7 @@ ApplicationWindow {
                         x: parent.width - width - 13
                         y: joinNetworkCard.compactMode ? 76 : (parent.height - height) / 2
                         width: 142; height: 41; radius: 10
-                        opacity: networkIdInput.text.length === 16 && !zt.busy ? 1 : 0.45
+                        opacity: networkIdInput.text.length === 16 && !zt.busy && !zt.demoMode ? 1 : 0.45
                         gradient: Gradient {
                             GradientStop { position: 0; color: "#4fd6e1" }
                             GradientStop { position: 1; color: "#6f9dff" }
@@ -509,7 +515,7 @@ ApplicationWindow {
                         scale: joinMouse.pressed ? 0.96 : joinMouse.containsMouse && joinMouse.enabled ? 1.04 : 1
                         Behavior on scale { NumberAnimation { duration: 140; easing.type: Easing.OutBack } }
                         Text { anchors.centerIn: parent; text: zt.busy ? tr("Conectando…", "Connecting…") : tr("Conectar", "Connect"); color: "#07131f"; font.pixelSize: 10; font.bold: true }
-                        MouseArea { id: joinMouse; anchors.fill: parent; enabled: networkIdInput.text.length === 16 && !zt.busy; onClicked: window.joinNetwork() }
+                        MouseArea { id: joinMouse; anchors.fill: parent; enabled: networkIdInput.text.length === 16 && !zt.busy && !zt.demoMode; onClicked: window.joinNetwork() }
                     }
                 }
 
@@ -786,7 +792,8 @@ ApplicationWindow {
                     Text { anchors.verticalCenter: parent.verticalCenter; text: "⏻"; color: "#ff8793"; font.pixelSize: 13 }
                     Text { anchors.verticalCenter: parent.verticalCenter; text: tr("Sair da rede", "Leave network"); color: "#ff8793"; font.pixelSize: 11; font.weight: Font.DemiBold }
                 }
-                MouseArea { id: leaveNetworkMouse; anchors.fill: parent; hoverEnabled: true
+                opacity: zt.demoMode ? 0.45 : 1
+                MouseArea { id: leaveNetworkMouse; anchors.fill: parent; hoverEnabled: true; enabled: !zt.demoMode
                     onClicked: { leaveDialog.networkId = networkContextMenu.selectedNetworkId; leaveDialog.networkName = networkContextMenu.selectedNetworkName; networkContextMenu.close(); leaveDialog.open() }
                 }
             }

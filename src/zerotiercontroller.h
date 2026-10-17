@@ -18,9 +18,10 @@ class ZeroTierController final : public QObject
     Q_PROPERTY(QString message READ message NOTIFY stateChanged)
     Q_PROPERTY(bool messageIsError READ messageIsError NOTIFY stateChanged)
     Q_PROPERTY(QString lastUpdated READ lastUpdated NOTIFY stateChanged)
+    Q_PROPERTY(bool demoMode READ demoMode CONSTANT)
 
 public:
-    explicit ZeroTierController(QObject *parent = nullptr);
+    explicit ZeroTierController(bool demoMode = false, QObject *parent = nullptr);
 
     QString serviceStatus() const { return m_serviceStatus; }
     QString nodeId() const { return m_nodeId; }
@@ -29,6 +30,7 @@ public:
     QString message() const { return m_message; }
     bool messageIsError() const { return m_messageIsError; }
     QString lastUpdated() const { return m_lastUpdated; }
+    bool demoMode() const { return m_demoMode; }
 
     Q_INVOKABLE void refresh();
     Q_INVOKABLE void join(const QString &networkId);
@@ -63,5 +65,6 @@ private:
     QVariantList m_networks;
     bool m_busy = false;
     bool m_messageIsError = false;
+    bool m_demoMode = false;
     int m_joinPollsRemaining = 0;
 };

@@ -12,7 +12,8 @@
 #include <QStandardPaths>
 #include <unistd.h>
 
-ZeroTierController::ZeroTierController(QObject *parent) : QObject(parent)
+ZeroTierController::ZeroTierController(bool demoMode, QObject *parent)
+    : QObject(parent), m_demoMode(demoMode)
 {
     m_networkPollTimer.setSingleShot(true);
     connect(&m_networkPollTimer, &QTimer::timeout, this, [this] {
@@ -33,16 +34,32 @@ ZeroTierController::ZeroTierController(QObject *parent) : QObject(parent)
         setMessage("Não foi possível abrir a autorização do sistema. Confira se o Polkit está instalado.", true);
         emit stateChanged();
     });
-    refresh();
+    if (m_demoMode) {
+        m_nodeId = "8f3c2a1d7b9e4c60";
+        m_serviceStatus = "Online";
+        m_lastUpdated = QDateTime::currentDateTime().toString("HH:mm");
+        m_networks.append(QVariantMap{
+            {"id", "a09acf0234e5d6f7"},
+            {"name", "Studio Mesh"},
+            {"status", "OK"},
+            {"type", "PRIVATE"},
+            {"address", "10.147.20.14/24"},
+            {"connected", true}
+        });
+    } else {
+        refresh();
+    }
 }
 
 void ZeroTierController::refresh()
 {
+    if (m_demoMode) return;
     ensureTokenAndRun("status");
 }
 
 void ZeroTierController::join(const QString &networkId)
 {
+    if (m_demoMode) return;
     static const QRegularExpression idPattern("^[0-9a-fA-F]{16}$");
     if (!idPattern.match(networkId).hasMatch()) {
         setMessage("Digite um ID válido com 16 caracteres hexadecimais.", true);
@@ -54,6 +71,7 @@ void ZeroTierController::join(const QString &networkId)
 
 void ZeroTierController::leave(const QString &networkId)
 {
+    if (m_demoMode) return;
     m_networkPollTimer.stop();
     m_joinPollsRemaining = 0;
     ensureTokenAndRun("leave", networkId);

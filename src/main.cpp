@@ -15,7 +15,8 @@ int main(int argc, char *argv[])
     QGuiApplication::setWindowIcon(QIcon(QStringLiteral(":/assets/zerotier-icon.svg")));
     QQuickStyle::setStyle("Basic");
 
-    ZeroTierController controller;
+    const bool demoMode = app.arguments().contains(QStringLiteral("--demo"));
+    ZeroTierController controller(demoMode);
     AppSettings appSettings;
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("zt", &controller);
